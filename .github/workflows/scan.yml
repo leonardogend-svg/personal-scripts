@@ -1,0 +1,49 @@
+name: Trading Bot Scan
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Installa le dipendenze
+        run: npm install
+
+      - name: Esegui lo scan (modalità PAPER)
+        run: npm run scan
+        env:
+          ALPACA_API_KEY: ${{ secrets.ALPACA_API_KEY }}
+          ALPACA_API_SECRET: ${{ secrets.ALPACA_API_SECRET }}
+          ALPACA_TRADING_BASE_URL: https://paper-api.alpaca.markets
+          ALPACA_DATA_BASE_URL: https://data.alpaca.markets
+          SYMBOL: BTC/USD
+          TIMEFRAME: 5Min
+          FAST_MA: 9
+          SLOW_MA: 21
+          QTY: 0.0004
+          MAX_POSITION: 0.0004
+          STOP_LOSS_PCT: 2
+          MAX_DAILY_LOSS_PCT: 5
+          POSITION_EXIT_MINUTES: 30
+
+      - name: Salva la memoria aggiornata nel repository
+        run: |
+          git config user.name "trading-bot"
+          git config user.email "actions@github.com"
+          git add data/
+          git diff --staged --quiet || git commit -m "Aggiorna memoria bot [skip ci]"
+          git push
