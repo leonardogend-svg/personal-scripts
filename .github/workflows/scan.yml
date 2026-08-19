@@ -1,5 +1,9 @@
 name: Trading Bot Scan
 
+concurrency:
+  group: trading-bot-scan
+  cancel-in-progress: false
+
 on:
   schedule:
     - cron: "*/5 * * * *"
@@ -46,4 +50,5 @@ jobs:
           git config user.email "actions@github.com"
           git add data/
           git diff --staged --quiet || git commit -m "Aggiorna memoria bot [skip ci]"
+          git pull --rebase origin main
           git push
