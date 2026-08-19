@@ -2,11 +2,15 @@ import * as fs from "fs";
 import * as path from "path";
 import { LedgerRow } from "./types";
 
-const LEDGER_PATH = path.join(__dirname, "..", "data", "ledger.csv");
-const LEARNINGS_PATH = path.join(__dirname, "..", "data", "learnings.md");
+const DATA_DIR = path.join(__dirname, "..", "data");
+const LEDGER_PATH = path.join(DATA_DIR, "ledger.csv");
+const LEARNINGS_PATH = path.join(DATA_DIR, "learnings.md");
 const LEDGER_HEADER = "timestamp,symbol,action,price,quantity,reason,mode,outcome,pnl";
 
 function ensureFiles() {
+  if (!fs.existsSync(DATA_DIR)) {
+    fs.mkdirSync(DATA_DIR, { recursive: true });
+  }
   if (!fs.existsSync(LEDGER_PATH)) {
     fs.writeFileSync(LEDGER_PATH, LEDGER_HEADER + "\n", "utf-8");
   }
