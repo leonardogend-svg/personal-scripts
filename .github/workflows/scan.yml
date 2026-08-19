@@ -5,8 +5,11 @@ concurrency:
   cancel-in-progress: false
 
 on:
+  push:
+    branches:
+      - main
   schedule:
-    - cron: "2,7,12,17,22,27,32,37,42,47,52,57 * * * *"
+    - cron: "*/5 * * * *"
   workflow_dispatch: {}
 
 permissions:
@@ -15,9 +18,12 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout del repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -48,7 +54,14 @@ jobs:
         run: |
           git config user.name "trading-bot"
           git config user.email "actions@github.com"
+
           git add data/
-          git diff --staged --quiet || git commit -m "Aggiorna memoria bot [skip ci]"
+
+          if git diff --staged --quiet; then
+            echo "Nessuna modifica da salvare."
+          else
+            git commit -m "Aggiorna memoria bot [skip ci]"
+          fi
+
           git pull --rebase origin main
           git push
