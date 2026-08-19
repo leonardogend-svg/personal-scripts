@@ -1,0 +1,23 @@
+{
+  "name": "paper-trading-bot",
+  "version": "1.0.0",
+  "description": "Bot di paper trading su Alpaca (BTC/USD, MA crossover). Nessun trade reale.",
+  "private": true,
+  "scripts": {
+    "scan": "ts-node src/bot.ts",
+    "loop": "ts-node src/loop.ts",
+    "stats": "ts-node src/stats.ts",
+    "replay:raw": "ts-node src/replay.ts raw",
+    "replay:memory": "ts-node src/replay.ts memory",
+    "memory:reset": "ts-node src/resetMemory.ts"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
