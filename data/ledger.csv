@@ -1,1 +1,2 @@
 timestamp,symbol,action,price,quantity,reason,mode,outcome,pnl
+2026-08-22T04:55:00Z,BTC/USD,BUY,78517.8405,0.0004,"Ordine paper inviato con successo: Rischio approvato: quantità 0.0004 (~$31.41), posizione proiettata 0.0004 entro il limite 0.0004.",paper,OPEN,0
